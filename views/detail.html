@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>There will be news</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/social.css">
+</head>
+
+<body>
+
+<header>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <h1><a class="text-white" href="/">There will be news</a></h1>
+            <a href="https://github.com/the-super-toys/ml-there-will-be-news" target="_blank" class="fa fa-github"></a>
+        </div>
+    </div>
+</header>
+
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="card mb-3">
+            <div class="card-body">
+                <medium class="text-muted">{{date}}</medium>
+                <span></span>
+                <h2 class="card-title">{{title}}</h2>
+                <br/>
+                <h4 class="card-subtitle">{{subtitle}}</h4>
+                <p class="card-text">{{{body}}}</p>
+                <a href="{{urlTwitter}}" target="_blank" class="fa fa-twitter"></a>
+                <a href="{{urlFacebook}}" target="_blank" class="fa fa-facebook"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

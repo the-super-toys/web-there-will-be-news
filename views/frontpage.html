@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>There will be news</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link href="css/frontpage.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <h1><a class="text-white" href="/">There will be news</a></h1>
+            <a href="https://github.com/the-super-toys/ml-there-will-be-news" target="_blank" class="fa fa-github"></a>
+        </div>
+    </div>
+</header>
+
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="card-columns">
+            {{#news}}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">{{subtitle}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="/{{id}}" class="btn btn-sm btn-outline-secondary" role="button">Read more</a>
+                            <a href="/categories/{{category}}" class="btn btn-sm btn-outline-secondary" role="button">{{category}}</a>
+                        </div>
+                    </div>
+                    <small class="text-muted">{{date}}</small>
+                </div>
+            </div>
+            {{/news}}
+        </div>
+    </div>
+</div>
