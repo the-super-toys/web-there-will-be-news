@@ -64,7 +64,7 @@ function asEntity(news) {
         'id': news._id,
         'title': news.title,
         'subtitle': news.subtitle,
-        'body': news.body.replace(/(?:\r\n|\r|\n)/g, '<br/>'),
+        'body': news.body.replace(/(?:\r\n|\r|\n)/g, '<br/>').replace('Also on HuffPost:', ''),
         'category': news.category,
         'date': moment(news.date).fromNow()
     };
