@@ -12,7 +12,9 @@ let lastEvictDate = new Date();
 
 // DB setup
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/therewillbenews', {useNewUrlParser: true});
+
+const mongodbPath = process.env.MONGO_URL || "mongodb://localhost:27017/therewillbenews";
+mongoose.connect(mongodbPath, {useNewUrlParser: true});
 const News = mongoose.model('News', new mongoose.Schema({
     title: String,
     subtitle: String,
@@ -103,6 +105,7 @@ app.get('/:id', function (req, res) {
     });
 });
 
-app.listen(3000, function () {
-    console.log('Running on port 3000!');
+const port = process.env.PORT || 3000;
+app.listen(port, function () {
+    console.log(`Running on port ${port}!`);
 });
