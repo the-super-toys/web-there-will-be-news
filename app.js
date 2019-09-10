@@ -1,7 +1,7 @@
 // Config constants
 const evictEachSeconds = 60 * 60;
-const newsFrontPageCount = 100;
-const newsToCache = 2000;
+const newsFrontPageCount = 250;
+const newsToCache = 5000;
 
 //relative dates
 const moment = require('moment');
