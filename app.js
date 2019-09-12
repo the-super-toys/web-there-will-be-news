@@ -48,14 +48,7 @@ function evictCacheIfNeeded() {
                 console.error(news);
                 return
             }
-
-            formattedNews = [];
-
-            for (_new of news) {
-                formattedNews.push(asEntity(_new))
-            }
-
-            cachedNews = formattedNews
+            cachedNews = news
         });
 }
 
@@ -75,7 +68,8 @@ evictCacheIfNeeded();
 // routing setup
 app.get('/', function (req, res) {
     evictCacheIfNeeded();
-    res.render('frontpage', {'news': cachedNews.slice(0, newsFrontPageCount)});
+    let newsToShow = cachedNews.slice(0, newsFrontPageCount).map(news => asEntity(news));
+    res.render('frontpage', {'news': newsToShow});
 });
 
 app.get('/categories/:category', function (req, res) {
@@ -83,7 +77,7 @@ app.get('/categories/:category', function (req, res) {
         return news.category === req.params.category;
     });
 
-    res.render('frontpage', {'news': filtered});
+    res.render('frontpage', {'news': filtered.map(news => asEntity(news))});
 });
 
 app.get('/:id', function (req, res) {
