@@ -8,12 +8,14 @@
     <meta property="og:title" content="{{title}}">
     <meta property="og:description" content="{{subtitle}}">
     <meta property="og:url" content="https://therewillbenews.thesupertoys.org">
-    <meta name=”twitter:card” content=”summary” />
+    <meta name=”twitter:card” content=”summary”/>
 
     <title>There will be news</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/social.css">
+
+    <script src="js/like_dislike.js"></script>
 </head>
 
 <body>
@@ -30,15 +32,39 @@
 <div class="py-5 bg-light">
     <div class="container">
         <div class="card mb-3">
+            <div class="card-header"><small class="text-muted">{{date}}</small>
+                <small class="pull-right">
+                    <a href="{{urlTwitter}}" style='text-align:right;' target="_blank" class="fa fa-twitter"></a>
+                    <a href="{{urlFacebook}}" style='text-align:right;' target="_blank" class="fa fa-facebook"></a>
+                </small>
+            </div>
             <div class="card-body">
-                <medium class="text-muted">{{date}}</medium>
-                <span></span>
                 <h2 class="card-title">{{title}}</h2>
                 <br/>
                 <h4 class="card-subtitle">{{subtitle}}</h4>
                 <p class="card-text">{{{body}}}</p>
-                <a href="{{urlTwitter}}" target="_blank" class="fa fa-twitter"></a>
-                <a href="{{urlFacebook}}" target="_blank" class="fa fa-facebook"></a>
+            </div>
+            <div class="card-footer">
+                <button onclick="like('{{id}}')" class='btn btn-lg' style='background-color:transparent;'>
+                    {{#liked}}
+                    <div id="{{id}}_like_icon" style='text-align:left;' class="fa fa-thumbs-up selected"></div>
+                    <small id="{{id}}_like_counter" class="selected">{{positiveReviews}}</small>
+                    {{/liked}}
+                    {{^liked}}
+                    <div id="{{id}}_like_icon" style='text-align:left;' class="fa fa-thumbs-up"></div>
+                    <small id="{{id}}_like_counter" class="text-muted">{{positiveReviews}}</small>
+                    {{/liked}}
+                </button>
+                <button onclick="dislike('{{id}}')" class='btn btn-lg' style='background-color:transparent;'>
+                    {{#disliked}}
+                    <div id="{{id}}_dislike_icon" style='text-align:left;' class="fa fa-thumbs-down selected"></div>
+                    <small id="{{id}}_dislike_counter" class="selected">{{negativeReviews}}</small>
+                    {{/disliked}}
+                    {{^disliked}}
+                    <div id="{{id}}_dislike_icon" style='text-align:left;' class="fa fa-thumbs-down"></div>
+                    <small id="{{id}}_dislike_counter" class="text-muted">{{negativeReviews}}</small>
+                    {{/disliked}}
+                </button>
             </div>
         </div>
     </div>

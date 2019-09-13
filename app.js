@@ -21,6 +21,8 @@ const News = mongoose.model('News', new mongoose.Schema({
     body: String,
     url_image: String,
     category: String,
+    positiveReviews: Number,
+    negativeReviews: Number,
     date: Date
 }));
 
@@ -28,8 +30,13 @@ const News = mongoose.model('News', new mongoose.Schema({
 const express = require('express');
 const app = express();
 
+// cookies
+let cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 // mustache setup
 const mustacheExpress = require('mustache-express');
+app.use('/js', express.static(__dirname + '/views/js'));
 app.use('/css', express.static(__dirname + '/views/css'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.engine('html', mustacheExpress());
@@ -59,6 +66,8 @@ function asEntity(news) {
         'subtitle': news.subtitle,
         'body': news.body.replace(/(?:\r\n|\r|\n)/g, '<br/>').replace('Also on HuffPost:', ''),
         'category': news.category,
+        'positiveReviews': news.positiveReviews ? news.positiveReviews : 0,
+        'negativeReviews': news.negativeReviews ? news.negativeReviews : 0,
         'date': moment(news.date).fromNow()
     };
 }
@@ -83,7 +92,8 @@ app.get('/categories/:category', function (req, res) {
 app.get('/:id', function (req, res) {
     evictCacheIfNeeded();
 
-    News.findById(req.params.id, function (err, news) {
+    let newsId = req.params.id;
+    News.findById(newsId, function (err, news) {
         if (err) {
             console.error(err);
             res.send('Wrong news');
@@ -95,9 +105,62 @@ app.get('/:id', function (req, res) {
         news.urlTwitter = `https://twitter.com/share?url=${urlToShare}&text=${news.title}`;
         news.urlFacebook = `https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`, "pop", "width=600, height=400, scrollbars=no";
 
+        let previousState = req.cookies[`state_like${newsId}`];
+        if (previousState === 'like') news.liked = true;
+        else if (previousState === 'dislike') news.disliked = true;
+
         res.render('detail', news);
     });
 });
+
+app.post('/like/:id', function (req, res) {
+    likeDislike(true, req, res)
+});
+
+app.post('/dislike/:id', function (req, res) {
+    likeDislike(false, req, res)
+});
+
+function likeDislike(like, req, res) {
+    let newsId = req.params.id;
+    News.findById(newsId, function (err, news) {
+        if (err) {
+            console.error(err);
+            res.status(500).json({'message': err});
+            return
+        }
+
+        let previousState = req.cookies[`state_like${newsId}`];
+
+        if (like && previousState !== 'like') {
+            let previousValue = news.positiveReviews ? news.positiveReviews : 0;
+            news.positiveReviews = previousValue + 1;
+            if (previousState === 'dislike') news.negativeReviews = news.negativeReviews - 1;
+            res.cookie(`state_like${newsId}`, 'like');
+        } else if (!like && previousState !== 'dislike') {
+            let previousValue = news.negativeReviews ? news.negativeReviews : 0;
+            news.negativeReviews = previousValue + 1;
+            if (previousState === 'like') news.positiveReviews = news.positiveReviews - 1;
+            res.cookie(`state_like${newsId}`, 'dislike');
+        } else {
+            res.status(500).json({'message': 'user already performed this action'});
+            return
+        }
+
+        news.save(function (err, _) {
+            if (!err) {
+                let index = cachedNews.findIndex((obj => obj.id === news.id));
+                if (index !== -1) {
+                    cachedNews[index].negativeReviews = news.negativeReviews;
+                    cachedNews[index].positiveReviews = news.positiveReviews;
+                }
+                res.json({'message': 'success'});
+            } else {
+                res.status(500).json({'message': err});
+            }
+        });
+    });
+}
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {

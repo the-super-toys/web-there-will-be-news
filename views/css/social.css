@@ -1,8 +1,6 @@
 .fa {
-    padding: 20px;
     font-size: 30px;
     width: 75px;
-    text-align: center;
     text-decoration: none;
 }
 
@@ -11,11 +9,17 @@
 }
 
 .fa-facebook {
+    padding: 10px;
+    font-size: 17px;
+    width: 35px;
     background: #3B5998;
     color: white;
 }
 
 .fa-twitter {
+    padding: 10px;
+    font-size: 17px;
+    width: 35px;
     background: #55ACEE;
     color: white;
 }
@@ -23,4 +27,19 @@
 .fa-github {
     background: transparent;
     color: white;
+}
+.fa-thumbs-down {
+    font-size: 25px;
+    width: 30px;
+    color: #a2a3ae;
+}
+
+.fa-thumbs-up {
+    font-size: 25px;
+    width: 30px;
+    color: #a2a3ae;
+}
+
+.selected {
+    color: #0339F8;
 }
