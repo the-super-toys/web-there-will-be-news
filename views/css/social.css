@@ -40,6 +40,21 @@
     color: #a2a3ae;
 }
 
+.min-icon {
+    padding: 0;
+    font-size: 15px;
+    width: 15px;
+    color: #a2a3ae;
+}
+
+.min-icon:hover {
+    opacity: 1;
+}
+
 .selected {
-    color: #0339F8;
+    color: #55ACEE;
+}
+
+.min-header {
+    padding: .30rem 1.25rem
 }

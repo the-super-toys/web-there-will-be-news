@@ -68,6 +68,7 @@ function asEntity(news) {
         'category': news.category,
         'positiveReviews': news.positiveReviews ? news.positiveReviews : 0,
         'negativeReviews': news.negativeReviews ? news.negativeReviews : 0,
+        'hasLikes': news.positiveReviews > 0,
         'date': moment(news.date).fromNow()
     };
 }
