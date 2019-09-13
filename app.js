@@ -2,6 +2,7 @@
 const evictEachSeconds = 60 * 60;
 const newsFrontPageCount = 250;
 const newsToCache = 5000;
+const newsToShowForSearch = 100;
 
 //relative dates
 const moment = require('moment');
@@ -15,7 +16,8 @@ const mongoose = require('mongoose');
 
 const mongodbPath = process.env.MONGO_URL || "mongodb://localhost:27017/therewillbenews";
 mongoose.connect(mongodbPath, {useNewUrlParser: true});
-const News = mongoose.model('News', new mongoose.Schema({
+
+const schema = new mongoose.Schema({
     title: String,
     subtitle: String,
     body: String,
@@ -24,7 +26,9 @@ const News = mongoose.model('News', new mongoose.Schema({
     positiveReviews: Number,
     negativeReviews: Number,
     date: Date
-}));
+});
+schema.index({title: 'text', 'subtitle': 'text', 'body': 'text'});
+const News = mongoose.model('News', schema);
 
 // express setup
 const express = require('express');
@@ -88,6 +92,18 @@ app.get('/categories/:category', function (req, res) {
     });
 
     res.render('frontpage', {'news': filtered.map(news => asEntity(news))});
+});
+
+app.get('/search', function (req, res) {
+    News.find({$text: {$search: req.query.query}})
+        .limit(newsToShowForSearch)
+        .exec(function (err, filtered) {
+            if (filtered.length === 0) {
+                res.render('no_results');
+            } else {
+                res.render('frontpage', {'news': filtered.map(news => asEntity(news))});
+            }
+        });
 });
 
 app.get('/:id', function (req, res) {
