@@ -31,12 +31,13 @@
                     {{/hasLikes}}
                 </div>
                 <div class="card-body">
+                    <a href="/{{id}}" class="stretched-link"></a>
                     <h5 class="card-title">{{title}}</h5>
                     <p class="card-text">{{subtitle}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <a href="/{{id}}" class="btn btn-sm btn-outline-secondary" role="button">Read more</a>
-                            <a href="/categories/{{category}}" class="btn btn-sm btn-outline-secondary" role="button">{{category}}</a>
+                            <a href="/{{id}}" class="btn btn-sm btn-outline-secondary stretched-link" role="button">Read more</a>
+                            <a href="/categories/{{category}}" class="btn btn-sm btn-outline-secondary stretched-link" role="button">{{category}}</a>
                         </div>
                     </div>
                 </div>
