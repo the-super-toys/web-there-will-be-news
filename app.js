@@ -74,7 +74,10 @@ function asEntity(news) {
         'id': news._id,
         'title': news.title,
         'subtitle': news.subtitle,
-        'body': news.body.replace(/(?:\r\n|\r|\n)/g, '<br/>').replace('Also on HuffPost:', ''),
+        'body': news.body.replace(/(?:\r\n|\r|\n)/g, '<br/>')
+            .replace('Huffington Post', 'There will be news')
+            .replace('HuffPost:', 'There will be news:')
+            .replace('HuffPost', 'There will be news'),
         'category': news.category,
         'positiveReviews': news.positiveReviews ? news.positiveReviews : 0,
         'negativeReviews': news.negativeReviews ? news.negativeReviews : 0,
