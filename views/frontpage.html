@@ -29,8 +29,14 @@
                         <small class="text-muted">{{date}}</small>
                         {{#hasLikes}}
                         <small class="pull-right">
+                            {{#liked}}
+                            <div id="{{id}}_like_icon" style='text-align:left;' class="fa fa-thumbs-up min-icon selected"></div>
+                            <small id="{{id}}_like_counter" class="selected">{{positiveReviews}}</small>
+                            {{/liked}}
+                            {{^liked}}
                             <div id="{{id}}_like_icon" style='text-align:left;' class="fa fa-thumbs-up min-icon"></div>
                             <small id="{{id}}_like_counter" class="text-muted">{{positiveReviews}}</small>
+                            {{/liked}}
                         </small>
                         {{/hasLikes}}
                     </div>

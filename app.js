@@ -69,8 +69,14 @@ function evictCacheIfNeeded() {
         });
 }
 
-function asEntity(news) {
-    return {
+function asEntity(cookies, news) {
+    function markNewsStateByUser(cookies, news) {
+        let previousState = cookies[`state_like${news.id}`];
+        if (previousState === 'like') news.liked = true;
+        else if (previousState === 'dislike') news.disliked = true;
+    }
+
+    let entity = {
         'id': news._id,
         'title': news.title,
         'subtitle': news.subtitle,
@@ -84,14 +90,18 @@ function asEntity(news) {
         'hasLikes': news.positiveReviews > 0,
         'date': moment(news.date).fromNow()
     };
+
+    markNewsStateByUser(cookies, entity);
+    return entity
 }
+
 
 evictCacheIfNeeded();
 
 // routing setup
 app.get('/', function (req, res) {
     evictCacheIfNeeded();
-    let newsToShow = cachedNews.slice(0, newsFrontPageCount).map(news => asEntity(news));
+    let newsToShow = cachedNews.slice(0, newsFrontPageCount).map(news => asEntity(req.cookies, news));
     res.render('frontpage', {'news': newsToShow});
 });
 
@@ -100,7 +110,7 @@ app.get('/categories/:category', function (req, res) {
         return news.category === req.params.category;
     });
 
-    res.render('frontpage', {'news': filtered.map(news => asEntity(news))});
+    res.render('frontpage', {'news': filtered.map(news => asEntity(req.cookies, news))});
 });
 
 app.get('/search', function (req, res) {
@@ -110,7 +120,7 @@ app.get('/search', function (req, res) {
             if (filtered.length === 0) {
                 res.render('no_results');
             } else {
-                res.render('frontpage', {'news': filtered.map(news => asEntity(news))});
+                res.render('frontpage', {'news': filtered.map(news => asEntity(req.cookies, news))});
             }
         });
 });
@@ -126,14 +136,10 @@ app.get('/:id', function (req, res) {
             return
         }
 
-        news = asEntity(news);
+        news = asEntity(req.cookies, news);
         const urlToShare = req.protocol + '://' + req.get('host') + req.originalUrl;
         news.urlTwitter = `https://twitter.com/share?url=${urlToShare}&text=${news.title}`;
         news.urlFacebook = `https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`, "pop", "width=600, height=400, scrollbars=no";
-
-        let previousState = req.cookies[`state_like${newsId}`];
-        if (previousState === 'like') news.liked = true;
-        else if (previousState === 'dislike') news.disliked = true;
 
         res.render('detail', news);
     });
