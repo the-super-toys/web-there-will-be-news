@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/social.css">
+    <link rel="stylesheet" href="/css/frontpage.css">
+
+    <script src="js/masonry.pkgd.min.js"></script>
 </head>
 
 <body>
@@ -18,26 +21,31 @@
 
 <div class="py-5 bg-light">
     <div class="container">
-        <div class="card-columns">
+        <div class="grid" data-masonry='{ "itemSelector": ".grid-item"}'>
             {{#news}}
-            <div class="card">
-                <div class="card-header min-header">
-                    <small class="text-muted">{{date}}</small>
-                    {{#hasLikes}}
-                    <small class="pull-right">
-                        <div id="{{id}}_like_icon" style='text-align:left;' class="fa fa-thumbs-up min-icon"></div>
-                        <small id="{{id}}_like_counter" class="text-muted">{{positiveReviews}}</small>
-                    </small>
-                    {{/hasLikes}}
-                </div>
-                <div class="card-body">
-                    <a href="/{{id}}" class="stretched-link"></a>
-                    <h5 class="card-title">{{title}}</h5>
-                    <p class="card-text">{{subtitle}}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a href="/{{id}}" class="btn btn-sm btn-outline-secondary stretched-link" role="button">Read more</a>
-                            <a href="/categories/{{category}}" class="btn btn-sm btn-outline-secondary stretched-link" role="button">{{category}}</a>
+            <div class="grid-item">
+                <div class="card">
+                    <div class="card-header min-header">
+                        <small class="text-muted">{{date}}</small>
+                        {{#hasLikes}}
+                        <small class="pull-right">
+                            <div id="{{id}}_like_icon" style='text-align:left;' class="fa fa-thumbs-up min-icon"></div>
+                            <small id="{{id}}_like_counter" class="text-muted">{{positiveReviews}}</small>
+                        </small>
+                        {{/hasLikes}}
+                    </div>
+                    <div class="card-body">
+                        <a href="/{{id}}" class="stretched-link"></a>
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text">{{subtitle}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="/{{id}}" class="btn btn-sm btn-outline-secondary stretched-link" role="button">Read
+                                    more</a>
+                                <a href="/categories/{{category}}"
+                                   class="btn btn-sm btn-outline-secondary stretched-link"
+                                   role="button">{{category}}</a>
+                            </div>
                         </div>
                     </div>
                 </div>

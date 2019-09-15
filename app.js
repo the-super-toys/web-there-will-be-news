@@ -59,7 +59,13 @@ function evictCacheIfNeeded() {
                 console.error(news);
                 return
             }
-            cachedNews = news
+
+            news.forEach(function (news) {
+                news.positiveReviews = news.positiveReviews ? news.positiveReviews : 0;
+                news.negativeReviews = news.negativeReviews ? news.negativeReviews : 0;
+            });
+
+            cachedNews = news.sort((a, b) => b.positiveReviews - a.positiveReviews);
         });
 }
 
@@ -171,6 +177,9 @@ function likeDislike(like, req, res) {
                     cachedNews[index].negativeReviews = news.negativeReviews;
                     cachedNews[index].positiveReviews = news.positiveReviews;
                 }
+
+                cachedNews = cachedNews.sort((a, b) => b.positiveReviews - a.positiveReviews);
+
                 res.json({'message': 'success'});
             } else {
                 res.status(500).json({'message': err});
