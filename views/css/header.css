@@ -1,0 +1,9 @@
+@media (max-width: 699px) {
+    .btn-primary {
+        margin-top: 10px;
+    }
+
+    .form-control {
+        margin-top: 10px;
+    }
+}
